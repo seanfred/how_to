@@ -1,76 +1,53 @@
 class StepsController < ApplicationController
-  before_filter :find_howto
+  before_filter :find_howtolist
   before_filter :find_step, :only => [:show, :edit, :update, :destroy]
 
 
-  # GET /steps
-  # GET /steps.json
-  def index
-    @steps = Step.all
-  end
 
-  # GET /steps/1
-  # GET /steps/1.json
   def show
   end
 
-  # GET /steps/new
   def new
-    @step = Step.new
+    @step = @howtolist.steps.build
   end
 
-  # GET /steps/1/edit
-  def edit
-  end
-
-  # POST /steps
-  # POST /steps.json
   def create
-    @step = Step.new(step_params)
-
-    respond_to do |format|
-      if @step.save
-        format.html { redirect_to @step, notice: 'Step was successfully created.' }
-        format.json { render action: 'show', status: :created, location: @step }
-      else
-        format.html { render action: 'new' }
-        format.json { render json: @step.errors, status: :unprocessable_entity }
-      end
+    @step = @howtolist.steps.build(params[:step])
+    if @step.save
+     # flash[:notice] = "Step has been created."
+      redirect_to [@howtolist, @step]
+    else
+    #  flash[:alert] = "Step has not been created."
+      render :action => "new"
     end
   end
 
-  # PATCH/PUT /steps/1
-  # PATCH/PUT /steps/1.json
+  def edit
+
+  end
+
   def update
-    respond_to do |format|
-      if @step.update(step_params)
-        format.html { redirect_to @step, notice: 'Step was successfully updated.' }
-        format.json { head :no_content }
-      else
-        format.html { render action: 'edit' }
-        format.json { render json: @step.errors, status: :unprocessable_entity }
-      end
+    if @step.update_attributes(params[:step])
+      flash[:notice] = "Step has been updated."
+      redirect_to [@howtolist, @step]
+    else
+      flash[:alert] = "Step has not been updated."
+      render :action => "edit"
     end
   end
 
-  # DELETE /steps/1
-  # DELETE /steps/1.json
   def destroy
     @step.destroy
-    respond_to do |format|
-      format.html { redirect_to steps_url }
-      format.json { head :no_content }
-    end
+    flash[:notice] = "Step has been deleted."
+    redirect_to @howtolist
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_step
-      @step = Step.find(params[:id])
+    def find_howtolist
+      @howtolist = Howtolist.find(params[:howtolist_id])
     end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def step_params
-      params[:step]
-    end
+    def find_step
+      @step = @howtolist.steps.find(params[:id])
+end
 end

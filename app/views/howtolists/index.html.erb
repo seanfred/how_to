@@ -1,0 +1,23 @@
+<h1>Listing howtolists</h1>
+
+<table>
+  <tr>
+    <th>How to</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @howtolists.each do |howtolist| %>
+  <tr>
+    <td><%= howtolist.how_to %></td>
+    <td><%= link_to 'Show', howtolist %></td>
+    <td><%= link_to 'Edit', edit_howtolist_path(howtolist) %></td>
+    <td><%= link_to 'Destroy', howtolist, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Howtolist', new_howtolist_path %>
