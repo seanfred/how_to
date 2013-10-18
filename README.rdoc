@@ -1,3 +1,0 @@
-== How-To Site
-
-This app allows for the easy creation of how-to lists with step by step creation.
